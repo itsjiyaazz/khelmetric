@@ -367,7 +367,7 @@ function RecordingScreen({ t, currentTest, repCount, formScore, isRecording, exe
           <View style={[styles.hud, { top: 120, zIndex: 20 }]}>
             <Text style={styles.hudText}>{metricPrimaryLabel}: <Text style={{ color: '#34D399', fontWeight: '700' }}>{metricPrimaryValue}</Text></Text>
             <Text style={styles.hudText}>{secondaryLabel}: <Text style={{ color: '#34D399', fontWeight: '700' }}>{Math.round(formScore)}%</Text></Text>
-            <Text style={styles.hudText}>Confidence: <Text style={{ color: '#34D399', fontWeight: '700' }}>{85}%</Text></Text>
+            <Text style={styles.hudText}>{t.confidence || 'Confidence'}: <Text style={{ color: '#34D399', fontWeight: '700' }}>{85}%</Text></Text>
           </View>
         )}
 
@@ -375,8 +375,8 @@ function RecordingScreen({ t, currentTest, repCount, formScore, isRecording, exe
         <View style={[styles.banner, { bottom: 200, left: 16, right: 16, zIndex: 20 }]}>
           <Text style={{ color: '#fff', fontSize: 16, lineHeight: 22, textAlign: 'center' }}>
             {!exerciseStarted ? t.positionReady : 
-             isRecording ? '🤖 AI analyzing your form and counting reps...' : 
-             'Analysis complete! Great performance!'}
+             isRecording ? (t.aiAnalyzingText || '🤖 AI analyzing your form and counting reps...') : 
+             (t.analysisComplete || 'Analysis complete! Great performance!')}
           </Text>
         </View>
       </View>
@@ -479,7 +479,7 @@ function SAIDashboardScreen({ onBack, t }) {
             <View key={i} style={{ alignItems: 'center', paddingVertical: 8 }}>
               <Text style={{ fontSize: 18, fontWeight: '700', color: '#2563EB' }}>{r.count}</Text>
               <Text style={{ fontWeight: '700', color: '#111827' }}>{r.state}</Text>
-              <Text style={{ color: '#6B7280', fontSize: 12 }}>Top: {r.top}</Text>
+              <Text style={{ color: '#6B7280', fontSize: 12 }}>{t.topSport || 'Top'}: {r.top}</Text>
             </View>
           ))}
         </View>

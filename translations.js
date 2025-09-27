@@ -92,7 +92,13 @@ const translations = {
     aiConfidence: 'AI Confidence',
     
     // Navigation
-    back: 'Back'
+    back: 'Back',
+    
+    // Additional camera/analysis texts
+    confidence: 'Confidence',
+    aiAnalyzingText: '🤖 AI analyzing your form and counting reps...',
+    analysisComplete: 'Analysis complete! Great performance!',
+    topSport: 'Top'
   },
 
   hindi: {
@@ -180,7 +186,13 @@ const translations = {
     aiConfidence: 'AI विश्वास',
     
     // Navigation
-    back: 'वापस'
+    back: 'वापस',
+    
+    // Additional camera/analysis texts
+    confidence: 'विश्वास',
+    aiAnalyzingText: '🤖 AI आपके फॉर्म का विश्लेषण कर रहा है और दोहराव गिन रहा है...',
+    analysisComplete: 'विश्लेषण पूरा! शानदार प्रदर्शन!',
+    topSport: 'शीर्ष'
   },
 
   bengali: {
@@ -232,7 +244,13 @@ const translations = {
     football: 'ফুটবল',
     
     // Navigation
-    back: 'ফিরে যান'
+    back: 'ফিরে যান',
+    
+    // Additional camera/analysis texts
+    confidence: 'আত্মবিশ্বাস',
+    aiAnalyzingText: '🤖 AI আপনার ফর্ম বিশ্লেষণ করছে এবং পুনরাবৃত্তি গণনা করছে...',
+    analysisComplete: 'বিশ্লেষণ সম্পূর্ণ! কমানার প্রদর্শন!',
+    topSport: 'শীর্ষ'
   },
 
   telugu: {
@@ -284,7 +302,13 @@ const translations = {
     football: 'ఫుట్‌బాల్',
     
     // Navigation
-    back: 'తిరిగి'
+    back: 'తిరిగి',
+    
+    // Additional camera/analysis texts
+    confidence: 'ఆత్మవిశ్వాసం',
+    aiAnalyzingText: '🤖 AI మీ రూపాన్ని విశ్లేషించి మరియు పునరావృతాలను గణిస్తోంది...',
+    analysisComplete: 'విశ్లేషణ పూర్తి! అద్భుతం ప్రదర్శన!',
+    topSport: 'శీర్ష'
   },
 
   marathi: {
@@ -336,7 +360,13 @@ const translations = {
     football: 'फुटबॉल',
     
     // Navigation
-    back: 'मागे'
+    back: 'मागे',
+    
+    // Additional camera/analysis texts
+    confidence: 'आत्मविश्वास',
+    aiAnalyzingText: '🤖 AI तुमचा फॉर्म विश्लेषण करत आहे आणि पुनरावृत्ती मोजत आहे...',
+    analysisComplete: 'विश्लेषण पूर्ण! अप्रतिम कामगिरी!',
+    topSport: 'शिर्ष'
   },
 
   tamil: {
@@ -388,7 +418,13 @@ const translations = {
     football: 'கால்பந்தாட்டம்',
     
     // Navigation
-    back: 'விரும்பு'
+    back: 'விரும்பு',
+    
+    // Additional camera/analysis texts
+    confidence: 'நம்பிக்கை',
+    aiAnalyzingText: '🤖 AI உங்கள் வடிவை பரிசீலிக்கிறது மற்றும் மீண்டும் ஒற்றை எண்ணுகிறது...',
+    analysisComplete: 'பரிசீலனை முடிந்தது! அருமையான விளைவு!',
+    topSport: 'முதலிடம்'
   },
 
   urdu: {
@@ -440,7 +476,13 @@ const translations = {
     football: 'فٹ بال',
     
     // Navigation
-    back: 'واپس'
+    back: 'واپس',
+    
+    // Additional camera/analysis texts
+    confidence: 'اعتماد',
+    aiAnalyzingText: '🤖 AI آپ کے فارم کا تجزیہ کر رہا ہے اور تکرار گن رہا ہے...',
+    analysisComplete: 'تجزیہ مکمل! زبردست کارکردگی!',
+    topSport: 'اعلیٰ'
   },
 
   gujarati: {
