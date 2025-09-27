@@ -66,7 +66,33 @@ const translations = {
     cameraPermission: 'Camera Permission Required',
     cameraPermissionDesc: 'Camera access is needed for AI fitness analysis',
     grantPermission: 'Grant Camera Permission',
-    aiAnalyzing: 'AI Analyzing Movement'
+    aiAnalyzing: 'AI Analyzing Movement',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI Talent Dashboard',
+    officialPortal: 'Official Portal',
+    athletesAssessed: 'Athletes Assessed',
+    topPerformers: 'Top Performers',
+    statesCovered: 'States Covered',
+    recentHighPotential: 'Recent High-Potential Athletes',
+    regionalTalentDist: 'Regional Talent Distribution',
+    talentScore: 'Talent Score',
+    basketball: 'Basketball',
+    athletics: 'Athletics',
+    volleyball: 'Volleyball',
+    cricket: 'Cricket',
+    wrestling: 'Wrestling',
+    football: 'Football',
+    
+    // Camera instructions
+    cameraInstructionSitups: 'Keep your back straight and engage your core',
+    cameraInstructionJump: 'Land softly and maintain balance',
+    
+    // AI metrics
+    aiConfidence: 'AI Confidence',
+    
+    // Navigation
+    back: 'Back'
   },
 
   hindi: {
@@ -128,7 +154,33 @@ const translations = {
     jumpHeightCm: 'कूद की ऊँचाई (सेमी)',
     aiFeedback: 'AI फीडबैक',
     selectLanguage: 'भाषा चुनें',
-    changeLanguage: 'भाषा बदलें'
+    changeLanguage: 'भाषा बदलें',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI प्रतिभा डैशबोर्ड',
+    officialPortal: 'आधिकारिक पोर्टल',
+    athletesAssessed: 'खिलाड़ियों का मूल्यांकन',
+    topPerformers: 'शीर्ष प्रदर्शक',
+    statesCovered: 'राज्य शामिल',
+    recentHighPotential: 'हाल के उच्च संभावना वाले खिलाड़ी',
+    regionalTalentDist: 'क्षेत्रीय प्रतिभा वितरण',
+    talentScore: 'प्रतिभा स्कोर',
+    basketball: 'बास्केटबॉल',
+    athletics: 'एथलेटिक्स',
+    volleyball: 'वॉलीबॉल',
+    cricket: 'क्रिकेट',
+    wrestling: 'कुश्ती',
+    football: 'फुटबॉल',
+    
+    // Camera instructions
+    cameraInstructionSitups: 'अपनी पीठ सीधी रखें और कोर एंगेज करें',
+    cameraInstructionJump: 'धीरे से उतरें और संतुलन बनाए रखें',
+    
+    // AI metrics
+    aiConfidence: 'AI विश्वास',
+    
+    // Navigation
+    back: 'वापस'
   },
 
   bengali: {
@@ -161,7 +213,26 @@ const translations = {
     results: 'এখানে আপনার ফলাফল',
     continueTraining: 'প্রশিক্ষণ চালিয়ে যান',
     selectLanguage: 'ভাষা নির্বাচন করুন',
-    changeLanguage: 'ভাষা পরিবর্তন করুন'
+    changeLanguage: 'ভাষা পরিবর্তন করুন',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI প্রতিভা ড্যাশবোর্ড',
+    officialPortal: 'অফিসিয়াল পোর্টাল',
+    athletesAssessed: 'ক্রীড়াবিদদের মূল্যায়ন',
+    topPerformers: 'শীর্ষ পারফরমার',
+    statesCovered: 'রাজ্য অন্তর্ভুক্ত',
+    recentHighPotential: 'সাম্প্রতিক উচ্চ সম্ভাবনাময় ক্রীড়াবিদ',
+    regionalTalentDist: 'আঞ্চলিক প্রতিভা বিতরণ',
+    talentScore: 'প্রতিভা স্কোর',
+    basketball: 'বাস্কেটবল',
+    athletics: 'অ্যাথলেটিক্স',
+    volleyball: 'ভলিবল',
+    cricket: 'ক্রিকেট',
+    wrestling: 'কুস্তি',
+    football: 'ফুটবল',
+    
+    // Navigation
+    back: 'ফিরে যান'
   },
 
   telugu: {
@@ -194,7 +265,26 @@ const translations = {
     results: 'ఇవి మీ ఫలితాలు',
     continueTraining: 'శిక్షణను కొనసాగించండి',
     selectLanguage: 'భాషను ఎంచుకోండి',
-    changeLanguage: 'భాష మార్చండి'
+    changeLanguage: 'భాష మార్చండి',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI ప్రతిభా డ్యాష్‌బోర్డ్',
+    officialPortal: 'అధికారిక పోర్టల్',
+    athletesAssessed: 'క్రీడాకారుల మూల్యాంకనం',
+    topPerformers: 'అగ్రశ్రేణి ప్రదర్శనకారులు',
+    statesCovered: 'రాష్ట్రాలు కవర్ చేయబడ్డాయి',
+    recentHighPotential: 'ఇటీవలి అధిక సామర్థ్య క్రీడాకారులు',
+    regionalTalentDist: 'ప్రాంతీయ ప్రతిభా పంపిణీ',
+    talentScore: 'ప్రతిభా స్కోర్',
+    basketball: 'బాస్కెట్‌బాల్',
+    athletics: 'అథ్లెటిక్స్',
+    volleyball: 'వాలీబాల్',
+    cricket: 'క్రికెట్',
+    wrestling: 'రెజ్లింగ్',
+    football: 'ఫుట్‌బాల్',
+    
+    // Navigation
+    back: 'తిరిగి'
   },
 
   marathi: {
@@ -227,7 +317,26 @@ const translations = {
     results: 'हे तुमचे निकाल आहेत',
     continueTraining: 'प्रशिक्षण चालू ठेवा',
     selectLanguage: 'भाषा निवडा',
-    changeLanguage: 'भाषा बदला'
+    changeLanguage: 'भाषा बदला',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI प्रतिभा डॅशबोर्ड',
+    officialPortal: 'अधिकृत पोर्टल',
+    athletesAssessed: 'खेलाडूंचे मूल्यमापन',
+    topPerformers: 'सर्वोत्तम कामगिरी',
+    statesCovered: 'राज्ये व्याप्त',
+    recentHighPotential: 'अलीकडील उच्च संभावना खेळाडू',
+    regionalTalentDist: 'प्रादेशिक प्रतिभा वितरण',
+    talentScore: 'प्रतिभा गुण',
+    basketball: 'बास्केटबॉल',
+    athletics: 'अथलेटिक्स',
+    volleyball: 'व्हॉलीबॉल',
+    cricket: 'क्रिकेट',
+    wrestling: 'कुस्ती',
+    football: 'फुटबॉल',
+    
+    // Navigation
+    back: 'मागे'
   },
 
   tamil: {
@@ -260,7 +369,26 @@ const translations = {
     results: 'இவை உங்கள் முடிவுகள்',
     continueTraining: 'பயிற்சியைத் தொடருங்கள்',
     selectLanguage: 'மொழியைத் தேர்ந்தெடுக்கவும்',
-    changeLanguage: 'மொழியை மாற்றவும்'
+    changeLanguage: 'மொழியை மாற்றவும்',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI திறமை அலங்காரப்பை',
+    officialPortal: 'அரசு வேலை',
+    athletesAssessed: 'விளையாட்டு களை மதிப்பீடு',
+    topPerformers: 'சிறந்த நிகழ்வாளர்கள்',
+    statesCovered: 'மாநிலங்கள் உள்ளடங்கியுள்ளது',
+    recentHighPotential: 'அண்மைய உயர் திறன் விளையாடிகள்',
+    regionalTalentDist: 'பெரும்படி திறமை விதரணை',
+    talentScore: 'திறமை மதிப்பு',
+    basketball: 'கூடைப்பந்தாட்டம்',
+    athletics: 'திறமையியல்',
+    volleyball: 'வாலிபந்தாட்டம்',
+    cricket: 'க்ரிக்கெட்',
+    wrestling: 'சிலம்பம்',
+    football: 'கால்பந்தாட்டம்',
+    
+    // Navigation
+    back: 'விரும்பு'
   },
 
   urdu: {
@@ -293,7 +421,26 @@ const translations = {
     results: 'یہ آپ کے نتائج ہیں',
     continueTraining: 'تربیت جاری رکھیں',
     selectLanguage: 'زبان منتخب کریں',
-    changeLanguage: 'زبان تبدیل کریں'
+    changeLanguage: 'زبان تبدیل کریں',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI ٹیلنٹ ڈیش بورڈ',
+    officialPortal: 'سرکاری پورٹل',
+    athletesAssessed: 'کھلاڑیوں کا جائزہ',
+    topPerformers: 'اعلیٰ کارکردگی',
+    statesCovered: 'ریاستیں شامل',
+    recentHighPotential: 'حالیہ اعلیٰ صلاحیت کھلاڑی',
+    regionalTalentDist: 'علاقائی صلاحیت تقسیم',
+    talentScore: 'صلاحیت سکور',
+    basketball: 'باسکٹ بال',
+    athletics: 'ایتھلیٹکس',
+    volleyball: 'والی بال',
+    cricket: 'کرکٹ',
+    wrestling: 'کشتی',
+    football: 'فٹ بال',
+    
+    // Navigation
+    back: 'واپس'
   },
 
   gujarati: {
@@ -324,9 +471,28 @@ const translations = {
     startTest: 'ટેસ્ટ શરૂ કરો',
     testComplete: 'ટેસ્ટ પૂર્ણ!',
     results: 'આ તમારા પરિણામો છે',
-    continueTraining: 'તાલીમ ચાલુ રાખો',
+    continueTraining: 'તાલીம ચાલુ રાખો',
     selectLanguage: 'ભાષા પસંદ કરો',
-    changeLanguage: 'ભાષા બદલો'
+    changeLanguage: 'ભાષા બદલો',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI ટેલેન્ટ ડેશબોર્ડ',
+    officialPortal: 'અધિકારીક પોર્ટલ',
+    athletesAssessed: 'ખેલાડીઓનું મૂલ્யાંકન',
+    topPerformers: 'ઉત્કૃષ્ટ પ્રદર્શક',
+    statesCovered: 'રાજ્એો વ્યાપ્યાં',
+    recentHighPotential: 'અલ્પીકદીક ઉચ્ચ સંભાવના ખેલાડીઓ',
+    regionalTalentDist: 'વિસ્તારી પ્રતિભા વંટણ',
+    talentScore: 'પ્રતિભા સ્કોર',
+    basketball: 'બાસ્કેટબોલ',
+    athletics: 'એથલેટિક્સ',
+    volleyball: 'વોલીબોલ',
+    cricket: 'ક્રિકેટ',
+    wrestling: 'કુશ્તી',
+    football: 'ફુટબોલ',
+    
+    // Navigation
+    back: 'પાછું'
   },
 
   kannada: {
@@ -357,9 +523,28 @@ const translations = {
     startTest: 'ಪರೀಕ್ಷೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ',
     testComplete: 'ಪರೀಕ್ಷೆ ಪೂರ್ಣ!',
     results: 'ಇವು ನಿಮ್ಮ ಫಲಿತಾಂಶಗಳು',
-    continueTraining: 'ತರಬೇತಿ ಮುಂದುವರಿಸಿ',
-    selectLanguage: 'ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
-    changeLanguage: 'ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಿ'
+    continueTraining: 'ತರಬೇತಿ ಮುಂದುವರೆಸಿ',
+    selectLanguage: 'ಭಾಷೆಯನ್ನು ಮೊೆಮாಡಿ',
+    changeLanguage: 'ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಿ',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI ಪ್ರತಿಭಾ ಡ್ಯಾಶೕಬೊರ್ಡ್',
+    officialPortal: 'ಅಧಿಕಾರಿಕ ಪೋರ್ಟಲ್',
+    athletesAssessed: 'ಕ್ರೀಡಾವೀದರ ಮೂಲ್ಯಮಾಪನ',
+    topPerformers: 'ಉತ್ತಮ ಪ್ರದರ್ಶಕರು',
+    statesCovered: 'ರಾಜ್ಯಗಳು ಒೃಪೃಡು',
+    recentHighPotential: 'ಇತೀಚಿನ ಉಚ್ಚ ಸಾಮರ್ಥ ಕ್ರೀಡಾವೀದರು',
+    regionalTalentDist: 'ಪ್ರಾದೇಶಿಕ ಪ್ರತಿಭಾ ವಿತರಣೆ',
+    talentScore: 'ಪ್ರತಿಭಾ ಸ್ಕೋರ್',
+    basketball: 'ಬಾಸ್ಕೆಟ್‌ಬಾಲ್',
+    athletics: 'ಅಥಲೇಟಿಕ್ಸ್',
+    volleyball: 'ವೊಲಿಬಾಲ್',
+    cricket: 'ಕ್ರಿಕೆಟ್',
+    wrestling: 'ಕುಸ್ತಿ',
+    football: 'ಫುಟ್‌ಬಾಲ್',
+    
+    // Navigation
+    back: 'ಹಿಂತಿರುಗಿ'
   },
 
   malayalam: {
@@ -392,7 +577,26 @@ const translations = {
     results: 'ഇവയാണ് നിങ്ങളുടെ ഫലങ്ങൾ',
     continueTraining: 'പരിശീലനം തുടരുക',
     selectLanguage: 'ഭാഷ തിരഞ്ഞെടുക്കുക',
-    changeLanguage: 'ഭാഷ മാറ്റുക'
+    changeLanguage: 'ഭാഷ മാറ്റുക',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI പ്രതിഭാ ഡാഷ്ബോർഡ്',
+    officialPortal: 'അധികൃത പോർട്ടൽ',
+    athletesAssessed: 'കായിക കഴിവുകൾ വിലയിരുത്തൽ',
+    topPerformers: 'ഉന്നത പ്രദര്ശനക്കാർ',
+    statesCovered: 'രാജ്യങ്ങൾ ലിസ്റ്റ് ആക്കിയുൾൾ',
+    recentHighPotential: 'അന്ത്യതീയ ഉയര് സാമര്ഥ്യം വിളയാടികൾ',
+    regionalTalentDist: 'പ്രാദേശിക പ്രതിഭാ വിതരണം',
+    talentScore: 'പ്രതിഭാ സ്കോർ',
+    basketball: 'ബാസ്കെട്ട്ബോൾ',
+    athletics: 'അത്ലെട്ടിക്സ്',
+    volleyball: 'വൊളിബോൾ',
+    cricket: 'ക്രിക്കെട്ട്',
+    wrestling: 'കുസ്തി',
+    football: 'ഫുട്ബോൾ',
+    
+    // Navigation
+    back: 'തിരിച്ച്'
   },
 
   punjabi: {
@@ -425,7 +629,26 @@ const translations = {
     results: 'ਇਹ ਤੁਹਾਡੇ ਨਤੀਜੇ ਹਨ',
     continueTraining: 'ਸਿਖਲਾਈ ਜਾਰੀ ਰੱਖੋ',
     selectLanguage: 'ਭਾਸ਼ਾ ਚੁਣੋ',
-    changeLanguage: 'ਭਾਸ਼ਾ ਬਦਲੋ'
+    changeLanguage: 'ਭਾਸ਼ਾ ਬਦਲੋ',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI ਪ੍ਰਤਿਭਾ ਡੀਸ਼ਬੋਰਡ',
+    officialPortal: 'ਸਰਕਾਰੀ ਪੋਰਟਲ',
+    athletesAssessed: 'ਖਿਡਾਰੀਆਂ ਦਾ ਮੁਲਾਂਕਣ',
+    topPerformers: 'ਸਿਖਰ ਪ੍ਰਦਰਸ਼ਕ',
+    statesCovered: 'ਰਾਜ ਸ਼ਾਮਲ',
+    recentHighPotential: 'ਹਾਲੀਆ ਉੱਚ ਸੰਭਾਵਨਾ ਖਿਡਾਰੀ',
+    regionalTalentDist: 'ਖੇਤਰੀ ਪ੍ਰਤਿਭਾ ਵੰਡ',
+    talentScore: 'ਪ੍ਰਤਿਭਾ ਸਕੋਰ',
+    basketball: 'ਬਾਸਕੇਤਬਾਲ',
+    athletics: 'ਐਥਲੇਟਿਕਸ',
+    volleyball: 'ਵਾਲੀਬਾਲ',
+    cricket: 'ਕ੍ਰਿਕੇਟ',
+    wrestling: 'ਕੁਸ਼ਤੀ',
+    football: 'ਫੁੱਟਬਾਲ',
+    
+    // Navigation
+    back: 'ਵਾਪਸ'
   },
 
   odia: {
@@ -458,7 +681,26 @@ const translations = {
     results: 'ଏହା ତୁମର ଫଳାଫଳ',
     continueTraining: 'ପ୍ରଶିକ୍ଷଣ ଜାରି ରଖ',
     selectLanguage: 'ଭାଷା ବାଛ',
-    changeLanguage: 'ଭାଷା ବଦଳାଅ'
+    changeLanguage: 'ଭାଷା ବଦଳାଅ',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI ପ୍ରତିଭା ଡ୍ଯାଶବୋର୍ଡ',
+    officialPortal: 'ଅଧିକାରିକ ପୋର୍ଟାଲ',
+    athletesAssessed: 'ଖେଳୁଆଡ଼ଲ ମୂଲ୍ୟାଙ୍କନ',
+    topPerformers: 'ଶୀର୍ଷ ପ୍ରଦର୍ଶକ',
+    statesCovered: 'ରାଜ୍ୟ ପ୍ରଭାଵିତ',
+    recentHighPotential: 'ସାମ୍ପ୍ରତିକ ଉଚ୍ଚ ସମ୍ଭାବନା ଖେଳୁଆଡ଼',
+    regionalTalentDist: 'ଆଞ୍ଚଳିକ ପ୍ରତିଭା ବିତରଣ',
+    talentScore: 'ପ୍ରତିଭା ସ୍କୋର',
+    basketball: 'ବାସ୍କେଟବଲ',
+    athletics: 'ଅଥଲେଟିକସ',
+    volleyball: 'ଭଲିବଲ',
+    cricket: 'କ୍ରିକେଟ',
+    wrestling: 'କୁସ୍ତି',
+    football: 'ଫୁଟବଲ',
+    
+    // Navigation
+    back: 'ପାଛକୁ'
   },
 
   assamese: {
@@ -489,9 +731,28 @@ const translations = {
     startTest: 'টেষ্ট আৰম্ভ কৰক',
     testComplete: 'টেষ্ট সম্পূৰ্ণ!',
     results: 'ইয়াত আপোনাৰ ফলাফল',
-    continueTraining: 'প্ৰশিক্ষণ অব্যাহত ৰাখক',
-    selectLanguage: 'ভাষা নিৰ্বাচন কৰক',
-    changeLanguage: 'ভাষা সলনি কৰক'
+    continueTraining: 'প্রশিক্ষণ অব্যাহত রাখক',
+    selectLanguage: 'ভাষা নির্বাচন করক',
+    changeLanguage: 'ভাষা সলনি করক',
+    
+    // SAI Dashboard translations
+    saiDashboard: 'SAI প্রতিভা ড্যাশবোর্ড',
+    officialPortal: 'অধিকারিক পোর্টেল',
+    athletesAssessed: 'ক্রীড়াবিদসকলর মূল্যাংকন',
+    topPerformers: 'শ্রেষ্ঠ প্রদর্শনকারী',
+    statesCovered: 'রাজ্যসমূহ অন্তর্ভুক্ত',
+    recentHighPotential: 'সাম্প্রতিক উচ্চ সামর্থ্যর ক্রীড়াবিদ',
+    regionalTalentDist: 'আঞ্চলিক প্রতিভা বিতরণ',
+    talentScore: 'প্রতিভা স্কোর',
+    basketball: 'বাস্কেতবল',
+    athletics: 'অ্যাথলেটিক্স',
+    volleyball: 'ভলিবল',
+    cricket: 'ক্রিকেট',
+    wrestling: 'কুস্তি',
+    football: 'ফুটবল',
+    
+    // Navigation
+    back: 'উতর'
   },
 
   // Additional Indian Languages (Basic translations for now)

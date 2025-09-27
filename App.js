@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { SafeAreaView, View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet, Modal, FlatList } from 'react-native';
+import { SafeAreaView, View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet, Modal, FlatList, StatusBar, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import translations, { languageOptions } from './translations';
 import { ExerciseCamera, FitnessAnalyzer } from './AIFitnessAnalyzer';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 // KhelMetric Prototype - React Native (E
 const levels = [
@@ -114,6 +116,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0b1021' }}>
+      <StatusBar barStyle="light-content" backgroundColor="#0b1021" />
       {currentScreen === 'welcome' && (
         <WelcomeScreen t={t} onStart={() => setCurrentScreen('profile')} />
       )}
@@ -178,7 +181,7 @@ export default function App() {
         <ResultsScreen t={t} results={testResults} onContinue={() => setCurrentScreen('dashboard')} />
       )}
       {currentScreen === 'sai-dashboard' && (
-        <SAIDashboardScreen onBack={() => setCurrentScreen('dashboard')} />
+        <SAIDashboardScreen onBack={() => setCurrentScreen('dashboard')} t={t} />
       )}
       
       <LanguageSelector 
@@ -356,20 +359,21 @@ function RecordingScreen({ t, currentTest, repCount, formScore, isRecording, exe
           onFormScore={onFormScoreUpdate}
           onAnalysisUpdate={handleAnalysisUpdate}
           isRecording={isRecording && exerciseStarted}
+          t={t}
         />
         
-        {/* AI Analysis HUD Overlay */}
+        {/* AI Analysis HUD Overlay - Positioned safely */}
         {isRecording && exerciseStarted && (
-          <View style={styles.hud}>
+          <View style={[styles.hud, { top: 120, zIndex: 20 }]}>
             <Text style={styles.hudText}>{metricPrimaryLabel}: <Text style={{ color: '#34D399', fontWeight: '700' }}>{metricPrimaryValue}</Text></Text>
             <Text style={styles.hudText}>{secondaryLabel}: <Text style={{ color: '#34D399', fontWeight: '700' }}>{Math.round(formScore)}%</Text></Text>
             <Text style={styles.hudText}>Confidence: <Text style={{ color: '#34D399', fontWeight: '700' }}>{85}%</Text></Text>
           </View>
         )}
 
-        {/* Status Banner */}
-        <View style={styles.banner}>
-          <Text style={{ color: '#fff' }}>
+        {/* Status Banner - Positioned safely above home button */}
+        <View style={[styles.banner, { bottom: 200, left: 16, right: 16, zIndex: 20 }]}>
+          <Text style={{ color: '#fff', fontSize: 16, lineHeight: 22, textAlign: 'center' }}>
             {!exerciseStarted ? t.positionReady : 
              isRecording ? '🤖 AI analyzing your form and counting reps...' : 
              'Analysis complete! Great performance!'}
@@ -377,7 +381,7 @@ function RecordingScreen({ t, currentTest, repCount, formScore, isRecording, exe
         </View>
       </View>
 
-      <View style={{ padding: 16, backgroundColor: '#111827' }}>
+      <View style={{ padding: 16, paddingBottom: 40, backgroundColor: '#111827' }}> {/* Extra padding for home gesture */}
         <TouchableOpacity style={[styles.ctaBtn, { backgroundColor: exerciseStarted ? '#059669' : '#2563EB' }]} onPress={onStartExercise} disabled={exerciseStarted}>
           <Text style={styles.ctaText}>{exerciseStarted ? `✅ ${t.exerciseProgress}` : `🎬 ${t.startExercise}`}</Text>
         </TouchableOpacity>
@@ -409,7 +413,7 @@ function ResultsScreen({ t, results, onContinue }) {
         <View style={styles.metricsGrid}>
           <MetricBox title={t.situpsCompleted} value={results?.situps ?? 0} color="#3B82F6" />
           <MetricBox title={t.formScore} value={`${results?.formScore ?? 0}%`} color="#10B981" />
-          <MetricBox title="AI Confidence" value={`${results?.aiConfidence ?? 85}%`} color="#F59E0B" />
+          <MetricBox title={t.aiConfidence || 'AI Confidence'} value={`${results?.aiConfidence ?? 85}%`} color="#F59E0B" />
         </View>
         <View style={{ marginTop: 8 }}>
           <Text style={styles.cardSub}>{t.aiFeedback}</Text>
@@ -427,27 +431,28 @@ function ResultsScreen({ t, results, onContinue }) {
   );
 }
 
-function SAIDashboardScreen({ onBack }) {
+function SAIDashboardScreen({ onBack, t }) {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F5F9' }} contentContainerStyle={{ padding: 16 }}>
       <NavigationHeader 
-        title="SAI Talent Dashboard" 
-        subtitle="Official Portal" 
-        onBack={onBack} 
+        title={t.saiDashboard || 'SAI Talent Dashboard'} 
+        subtitle={t.officialPortal || 'Official Portal'} 
+        onBack={onBack}
+        t={t}
       />
 
       <View style={styles.metricsRow}>
-        <BigStat icon={<Ionicons name="people" size={28} color="#2563EB" />} value="2,847" label="Athletes Assessed" color="#2563EB" />
-        <BigStat icon={<Ionicons name="star" size={28} color="#16A34A" />} value="142" label="Top Performers" color="#16A34A" />
-        <BigStat icon={<Ionicons name="medal" size={28} color="#F59E0B" />} value="28" label="States Covered" color="#F59E0B" />
+        <BigStat icon={<Ionicons name="people" size={28} color="#2563EB" />} value="2,847" label={t.athletesAssessed || 'Athletes Assessed'} color="#2563EB" />
+        <BigStat icon={<Ionicons name="star" size={28} color="#16A34A" />} value="142" label={t.topPerformers || 'Top Performers'} color="#16A34A" />
+        <BigStat icon={<Ionicons name="medal" size={28} color="#F59E0B" />} value="28" label={t.statesCovered || 'States Covered'} color="#F59E0B" />
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Recent High-Potential Athletes</Text>
+        <Text style={styles.cardTitle}>{t.recentHighPotential || 'Recent High-Potential Athletes'}</Text>
         {[
-          { name: 'Rajesh Kumar', detail: 'Jharkhand • Basketball', score: '92%' },
-          { name: 'Priya Sharma', detail: 'Rajasthan • Athletics', score: '89%' },
-          { name: 'Arjun Patel', detail: 'Gujarat • Volleyball', score: '87%' }
+          { name: 'Rajesh Kumar', detail: `Jharkhand • ${t.basketball || 'Basketball'}`, score: '92%' },
+          { name: 'Priya Sharma', detail: `Rajasthan • ${t.athletics || 'Athletics'}`, score: '89%' },
+          { name: 'Arjun Patel', detail: `Gujarat • ${t.volleyball || 'Volleyball'}`, score: '87%' }
         ].map((a, i) => (
           <View key={i} style={styles.listItem}>
             <View>
@@ -456,20 +461,20 @@ function SAIDashboardScreen({ onBack }) {
             </View>
             <View style={{ alignItems: 'flex-end' }}>
               <Text style={[styles.listTitle, { color: '#16A34A' }]}>{a.score}</Text>
-              <Text style={styles.listSub}>Talent Score</Text>
+              <Text style={styles.listSub}>{t.talentScore || 'Talent Score'}</Text>
             </View>
           </View>
         ))}
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Regional Talent Distribution</Text>
+        <Text style={styles.cardTitle}>{t.regionalTalentDist || 'Regional Talent Distribution'}</Text>
         <View style={styles.regionGrid}>
           {[
-            { state: 'Maharashtra', count: '423', top: 'Cricket' },
-            { state: 'Karnataka', count: '387', top: 'Athletics' },
-            { state: 'Punjab', count: '312', top: 'Wrestling' },
-            { state: 'Kerala', count: '298', top: 'Football' }
+            { state: 'Maharashtra', count: '423', top: t.cricket || 'Cricket' },
+            { state: 'Karnataka', count: '387', top: t.athletics || 'Athletics' },
+            { state: 'Punjab', count: '312', top: t.wrestling || 'Wrestling' },
+            { state: 'Kerala', count: '298', top: t.football || 'Football' }
           ].map((r, i) => (
             <View key={i} style={{ alignItems: 'center', paddingVertical: 8 }}>
               <Text style={{ fontSize: 18, fontWeight: '700', color: '#2563EB' }}>{r.count}</Text>
@@ -529,12 +534,12 @@ function LanguageSelector({ visible, selectedLanguage, onSelectLanguage, onClose
   );
 }
 
-function NavigationHeader({ title, subtitle, onBack, rightComponent }) {
+function NavigationHeader({ title, subtitle, onBack, rightComponent, t }) {
   return (
     <View style={styles.navigationHeader}>
       <TouchableOpacity onPress={onBack} style={styles.backButton}>
         <Ionicons name="chevron-back" size={24} color="#374151" />
-        <Text style={styles.backText}>Back</Text>
+        <Text style={styles.backText}>{t?.back || 'Back'}</Text>
       </TouchableOpacity>
       
       <View style={styles.headerTitleContainer}>

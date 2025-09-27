@@ -49,47 +49,65 @@ export class FitnessAnalyzer {
 
   /**
    * Process camera frame for movement detection
-   * This is a simplified computer vision approach
+   * Enhanced with more realistic analysis timing
    */
   processFrame(imageUri, timestamp) {
     if (!this.isAnalyzing) return;
 
-    // Simulate real computer vision processing
+    // Only analyze if exercise is actually happening
+    // Check for movement less frequently to be more realistic
     const movementDetected = this.detectMovement(timestamp);
     
     if (movementDetected) {
       this.analyzeMovementPattern(timestamp);
     }
 
-    // Update form score based on movement quality
+    // Update form score gradually during exercise
     this.updateFormScore();
+    
+    // Log analysis activity less frequently
+    if (timestamp % 2000 < 500) { // Every 2 seconds
+      console.log(`🤖 Analyzing ${this.exerciseType}: ${this.repCount} reps, ${Math.round(this.formScore)}% form`);
+    }
   }
 
   /**
-   * Detect movement patterns using simplified computer vision
+   * Detect movement patterns - now requires manual trigger
+   * This simulates real pose detection that only works when user is actually moving
    */
   detectMovement(timestamp) {
-    // Simulate movement detection algorithm
+    // For now, return false - no automatic rep counting
+    // In a real implementation, this would use actual computer vision
+    // to detect body movement, pose changes, etc.
+    
+    // Only count movements if manually triggered (for testing)
+    return false; // No automatic movement detection
+  }
+  
+  /**
+   * Manual trigger for testing - simulates actual movement detection
+   * In real app, this would be called when actual pose/movement is detected
+   */
+  triggerMovementDetection() {
+    if (!this.isAnalyzing) return false;
+    
+    const timestamp = Date.now();
     const timeDiff = timestamp - this.lastMovementTime;
     
-    // Realistic movement simulation based on exercise type
-    let movementDetected = false;
-    
-    if (this.exerciseType === 'situps') {
-      // Sit-ups typically have 2-4 second intervals
-      if (timeDiff > 2000 && Math.random() > 0.7) {
-        movementDetected = true;
-        this.lastMovementTime = timestamp;
-      }
-    } else if (this.exerciseType === 'verticaljump') {
-      // Vertical jumps are more sporadic
-      if (timeDiff > 3000 && Math.random() > 0.8) {
-        movementDetected = true;
-        this.lastMovementTime = timestamp;
-      }
+    // Ensure realistic timing between reps
+    if (this.exerciseType === 'situps' && timeDiff > 2500) {
+      this.lastMovementTime = timestamp;
+      this.analyzeMovementPattern(timestamp);
+      console.log(`🤖 Manual sit-up movement triggered at ${timestamp}`);
+      return true;
+    } else if (this.exerciseType === 'verticaljump' && timeDiff > 3000) {
+      this.lastMovementTime = timestamp;
+      this.analyzeMovementPattern(timestamp);
+      console.log(`🤖 Manual jump movement triggered at ${timestamp}`);
+      return true;
     }
-
-    return movementDetected;
+    
+    return false;
   }
 
   /**
@@ -198,7 +216,8 @@ export function ExerciseCamera({
   onRepCount, 
   onFormScore, 
   onAnalysisUpdate,
-  isRecording 
+  isRecording,
+  t // Add translations prop
 }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [analyzer] = useState(() => new FitnessAnalyzer());
@@ -209,10 +228,10 @@ export function ExerciseCamera({
     if (isRecording && permission?.granted) {
       analyzer.startAnalysis(exerciseType);
       
-      // Start processing frames
+      // Start processing frames - less frequent for more realistic analysis
       intervalRef.current = setInterval(() => {
         processCurrentFrame();
-      }, 500); // Process every 500ms for performance
+      }, 1000); // Process every 1 second for more realistic movement detection
 
       return () => {
         if (intervalRef.current) {
@@ -269,39 +288,62 @@ export function ExerciseCamera({
         facing="front"
       />
       
-      {/* AI Analysis Overlay */}
+      {/* AI Analysis Overlay - Safe area */}
       {isRecording && (
         <View style={{
           position: 'absolute',
-          top: 20,
+          top: 60, // More space from top for status bar
           left: 20,
           right: 20,
-          backgroundColor: 'rgba(0,0,0,0.7)',
-          padding: 12,
-          borderRadius: 8
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          padding: 16,
+          borderRadius: 12,
+          zIndex: 10
         }}>
-          <Text style={{ color: '#34D399', fontWeight: 'bold', textAlign: 'center' }}>
+          <Text style={{ color: '#34D399', fontWeight: 'bold', textAlign: 'center', fontSize: 16 }}>
             🤖 AI ANALYZING MOVEMENT
           </Text>
         </View>
       )}
       
-      {/* Exercise Guidelines Overlay */}
+      {/* Exercise Guidelines Overlay - Safe area */}
       <View style={{
         position: 'absolute',
-        bottom: 100,
+        bottom: 180, // More space from bottom for navigation
         left: 20,
         right: 20,
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        padding: 12,
-        borderRadius: 8
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        padding: 16,
+        borderRadius: 12,
+        zIndex: 10
       }}>
-        <Text style={{ color: '#fff', textAlign: 'center', fontSize: 16 }}>
+        <Text style={{ color: '#fff', textAlign: 'center', fontSize: 16, lineHeight: 22, marginBottom: 12 }}>
           {exerciseType === 'situps' 
-            ? '💡 Keep your back straight and engage your core' 
-            : '💡 Land softly and maintain balance'
+            ? `💡 ${t?.cameraInstructionSitups || 'Keep your back straight and engage your core'}` 
+            : `💡 ${t?.cameraInstructionJump || 'Land softly and maintain balance'}`
           }
         </Text>
+        
+        {/* Manual Rep Counter for Testing */}
+        {isRecording && (
+          <TouchableOpacity 
+            style={{
+              backgroundColor: '#F97316',
+              padding: 12,
+              borderRadius: 8,
+              alignItems: 'center'
+            }}
+            onPress={() => {
+              if (analyzer.triggerMovementDetection()) {
+                // Movement was successfully counted
+              }
+            }}
+          >
+            <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
+              🎯 Tap When You Complete a Rep
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
