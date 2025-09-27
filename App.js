@@ -88,9 +88,12 @@ export default function App() {
         formScore: Math.round(finalForm),
         aiConfidence: aiResults.confidenceScore || 85,
         feedback: [
-          `🤖 AI Analysis: Completed ${finalReps} sit-ups with ${Math.round(finalForm)}% form accuracy`,
+          (t.aiAnalysisComplete || '🤖 AI Analysis: Completed {reps} sit-ups with {form}% form accuracy')
+            .replace('{reps}', finalReps)
+            .replace('{form}', Math.round(finalForm)),
           ...aiFeedback.slice(0, 2), // Take first 2 AI feedback items
-          `📊 Confidence Score: ${aiResults.confidenceScore || 85}%`
+          (t.confidenceScoreMsg || '📊 Confidence Score: {score}%')
+            .replace('{score}', aiResults.confidenceScore || 85)
         ]
       };
     } else {
@@ -103,9 +106,11 @@ export default function App() {
         powerScore: Math.round(powerScore),
         aiConfidence: aiResults.confidenceScore || 85,
         feedback: [
-          `🤖 AI Analysis: ${jumpHeight}cm vertical jump detected`,
+          (t.aiAnalysisJump || '🤖 AI Analysis: {height}cm vertical jump detected')
+            .replace('{height}', jumpHeight),
           ...aiFeedback.slice(0, 2), // Take first 2 AI feedback items
-          `📊 Confidence Score: ${aiResults.confidenceScore || 85}%`
+          (t.confidenceScoreMsg || '📊 Confidence Score: {score}%')
+            .replace('{score}', aiResults.confidenceScore || 85)
         ]
       };
     }
@@ -211,10 +216,10 @@ function WelcomeScreen({ t, onStart }) {
         </View>
 
         <View style={styles.featureGrid}>
-          <FeaturePill icon={<Ionicons name="flash" size={20} color="#fff" />} text="Real-time AI (sim)" />
-          <FeaturePill icon={<Ionicons name="server" size={20} color="#fff" />} text="Offline Prototype" />
-          <FeaturePill icon={<Ionicons name="language" size={20} color="#fff" />} text="Multi-language" />
-          <FeaturePill icon={<Ionicons name="trophy" size={20} color="#fff" />} text="Gamification" />
+          <FeaturePill icon={<Ionicons name="flash" size={20} color="#fff" />} text={t.realtimeAI || 'Real-time AI (sim)'} />
+          <FeaturePill icon={<Ionicons name="server" size={20} color="#fff" />} text={t.offlinePrototype || 'Offline Prototype'} />
+          <FeaturePill icon={<Ionicons name="language" size={20} color="#fff" />} text={t.multiLanguage || 'Multi-language'} />
+          <FeaturePill icon={<Ionicons name="trophy" size={20} color="#fff" />} text={t.gamification || 'Gamification'} />
         </View>
 
         <TouchableOpacity style={styles.primaryBtn} onPress={onStart}>
@@ -300,7 +305,7 @@ function DashboardScreen({ t, userName, currentLevelInfo, onOpenSitups, onOpenJu
 
         <TestListItem gradient={["#FF7A1A", "#FF3D71"]} icon={<MaterialIcons name="fitness-center" size={20} color="#fff" />} title={t.situpsTest} subtitle={t.coreStrength} onPress={onOpenSitups} />
         <TestListItem gradient={["#3B82F6", "#8B5CF6"]} icon={<Ionicons name="analytics" size={20} color="#fff" />} title={t.verticalJumpTest} subtitle={t.jumpPower} onPress={onOpenJump} />
-        <TestListItem gradient={["#8B5CF6", "#6366F1"]} icon={<Ionicons name="people" size={20} color="#fff" />} title="SAI Dashboard" subtitle="Official results portal" onPress={onOpenSAI} />
+        <TestListItem gradient={["#8B5CF6", "#6366F1"]} icon={<Ionicons name="people" size={20} color="#fff" />} title={t.saiDashboardTitle || 'SAI Dashboard'} subtitle={t.officialResultsPortal || 'Official results portal'} onPress={onOpenSAI} />
       </View>
     </ScrollView>
   );
@@ -313,7 +318,7 @@ function TestIntroScreen({ t, currentTest, onBack, onStart }) {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#FFF7ED' }} contentContainerStyle={{ padding: 16 }}>
-      <NavigationHeader title="Test Details" onBack={onBack} />
+      <NavigationHeader title={t.testDetails || 'Test Details'} onBack={onBack} t={t} />
 
       <View style={styles.card}>
         <LinearGradient colors={config.gradient} style={styles.roundBadge}>{config.icon}</LinearGradient>

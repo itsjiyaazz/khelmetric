@@ -98,7 +98,34 @@ const translations = {
     confidence: 'Confidence',
     aiAnalyzingText: '🤖 AI analyzing your form and counting reps...',
     analysisComplete: 'Analysis complete! Great performance!',
-    topSport: 'Top'
+    topSport: 'Top',
+    
+    // Feature pills
+    realtimeAI: 'Real-time AI (sim)',
+    offlinePrototype: 'Offline Prototype',
+    multiLanguage: 'Multi-language',
+    gamification: 'Gamification',
+    
+    // UI labels
+    testDetails: 'Test Details',
+    saiDashboardTitle: 'SAI Dashboard',
+    officialResultsPortal: 'Official results portal',
+    
+    // Level names
+    rookie: 'Rookie',
+    athlete: 'Athlete',
+    champion: 'Champion',
+    elite: 'Elite',
+    
+    // AI Feedback messages
+    aiAnalysisComplete: '🤖 AI Analysis: Completed {reps} sit-ups with {form}% form accuracy',
+    aiAnalysisJump: '🤖 AI Analysis: {height}cm vertical jump detected',
+    confidenceScoreMsg: '📊 Confidence Score: {score}%',
+    
+    // Camera component texts
+    requestingPermissions: 'Requesting camera permissions...',
+    aiAnalyzingMovement: '🤖 AI ANALYZING MOVEMENT',
+    tapCompleteRep: '🎯 Tap When You Complete a Rep'
   },
 
   hindi: {
@@ -192,7 +219,34 @@ const translations = {
     confidence: 'विश्वास',
     aiAnalyzingText: '🤖 AI आपके फॉर्म का विश्लेषण कर रहा है और दोहराव गिन रहा है...',
     analysisComplete: 'विश्लेषण पूरा! शानदार प्रदर्शन!',
-    topSport: 'शीर्ष'
+    topSport: 'शीर्ष',
+    
+    // Feature pills
+    realtimeAI: 'रियल-टाइम AI (सिम)',
+    offlinePrototype: 'ऑफलाइन प्रोटोटाइप',
+    multiLanguage: 'बहु-भाषा',
+    gamification: 'गेमिफिकेशन',
+    
+    // UI labels
+    testDetails: 'परीक्षा विवरण',
+    saiDashboardTitle: 'SAI डैशबोर्ड',
+    officialResultsPortal: 'आधिकारिक परिणाम पोर्टल',
+    
+    // Level names
+    rookie: 'रूकी',
+    athlete: 'खिलाडी',
+    champion: 'चैंपियन',
+    elite: 'उन्नत',
+    
+    // AI Feedback messages
+    aiAnalysisComplete: '🤖 AI विश्लेषण: {reps} सिट-अप पूरे {form}% फॉर्म सही',
+    aiAnalysisJump: '🤖 AI विश्लेषण: {height}सेमी वर्टिकल जंप मिला',
+    confidenceScoreMsg: '📊 विश्वास स्कोर: {score}%',
+    
+    // Camera component texts
+    requestingPermissions: 'कैमरा अनुमति का अनुरोध...',
+    aiAnalyzingMovement: '🤖 AI मूवमेंट का विश्लेषण कर रहा है',
+    tapCompleteRep: '🎯 रेप पूरा करने पर टैप करें'
   },
 
   bengali: {

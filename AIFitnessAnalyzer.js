@@ -261,20 +261,24 @@ export function ExerciseCamera({
   };
 
   if (!permission) {
-    return <Text>Requesting camera permissions...</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
+        <Text style={{ color: '#fff' }}>{t?.requestingPermissions || 'Requesting camera permissions...'}</Text>
+      </View>
+    );
   }
 
   if (!permission.granted) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
         <Text style={{ textAlign: 'center', marginBottom: 20, color: '#fff' }}>
-          Camera access is needed for AI fitness analysis
+          {t?.cameraPermissionDesc || 'Camera access is needed for AI fitness analysis'}
         </Text>
         <TouchableOpacity 
           style={{ backgroundColor: '#F97316', padding: 12, borderRadius: 8 }}
           onPress={requestPermission}
         >
-          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Grant Camera Permission</Text>
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>{t?.grantPermission || 'Grant Camera Permission'}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -301,7 +305,7 @@ export function ExerciseCamera({
           zIndex: 10
         }}>
           <Text style={{ color: '#34D399', fontWeight: 'bold', textAlign: 'center', fontSize: 16 }}>
-            🤖 AI ANALYZING MOVEMENT
+            {t?.aiAnalyzingMovement || '🤖 AI ANALYZING MOVEMENT'}
           </Text>
         </View>
       )}
@@ -340,7 +344,7 @@ export function ExerciseCamera({
             }}
           >
             <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
-              🎯 Tap When You Complete a Rep
+              {t?.tapCompleteRep || '🎯 Tap When You Complete a Rep'}
             </Text>
           </TouchableOpacity>
         )}
