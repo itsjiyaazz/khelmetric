@@ -42,6 +42,7 @@ export function createSitupPoseCounter(config = {}) {
     startedAt: Date.now(),
     stoppedAt: null,
     active: true,
+    lastPoseScore: 0,
   };
 
   async function ensureReady() {
@@ -53,6 +54,7 @@ export function createSitupPoseCounter(config = {}) {
     detector = await posedetection.createDetector(posedetection.SupportedModels.BlazePose, {
       runtime: 'tfjs',
       modelType: cfg.modelType,
+      enableSmoothing: true,
     });
     ready = true;
   }
@@ -113,11 +115,20 @@ export function createSitupPoseCounter(config = {}) {
 
       // phase transitions
       if (angleDeg <= cfg.upThresholdDeg && state.phase === 'down') {
+        // Count on completing the upward motion (down -> up)
         state.phase = 'up';
-      } else if (angleDeg >= cfg.downThresholdDeg && state.phase === 'up') {
-        state.phase = 'down';
         state.count += 1;
+        state.message = `Rep ${state.count} completed`;
+      } else if (angleDeg >= cfg.downThresholdDeg && state.phase === 'up') {
+        // Reset phase when going back down
+        state.phase = 'down';
       }
+    }
+
+    // Optional: require a minimally confident pose to proceed (helps on noisy frames)
+    if ((state.lastPoseScore ?? 0) < 0.3) {
+      // Do not stop, just skip this frame
+      return snapshot(ts);
     }
 
     // Cheat: no face visible too long
@@ -147,7 +158,9 @@ export function createSitupPoseCounter(config = {}) {
       maxPoses: 1,
       flipHorizontal: cfg.flipHorizontal,
     });
-    const landmarks = poses?.[0]?.keypoints || [];
+    const pose = poses?.[0];
+    state.lastPoseScore = pose?.score ?? 0;
+    const landmarks = pose?.keypoints || [];
     return updateFromLandmarks(landmarks, now);
   }
 
