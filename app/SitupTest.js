@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { CommonActions } from '@react-navigation/native';
 import { Button, Text, Card } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import LanguageFab from '../components/LanguageFab';
@@ -80,22 +81,12 @@ export default function SitupTest({ navigation }) {
     };
   }, [active, t]);
 
-  // Navigate to Result once finishing is toggled
-  useEffect(() => {
-    if (!finishing) return;
-    const snap = counterRef.current?.snapshot?.() || { count: 0 };
-    try {
-      navigation.replace('Result', { count: snap.count });
-    } catch (e) {
-      try { navigation.navigate('Result', { count: snap.count }); } catch (_) {}
-    }
-    // reset flag to avoid re-trigger
-    setFinishing(false);
-  }, [finishing, navigation]);
+  // Finishing flag no longer needed due to hard reset navigation
+  useEffect(() => {}, []);
 
   // Finish & persist
   const finish = async () => {
-    // Stop processing immediately and trigger navigation via state effect
+    // Stop processing immediately
     setActive(false);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -114,10 +105,27 @@ export default function SitupTest({ navigation }) {
       finishedAt: Date.now(),
     };
 
-    // Fire-and-forget save to avoid blocking navigation
+    // Fire-and-forget save
     try { saveTestResult(result); } catch {}
 
-    setFinishing(true);
+    // Hard reset navigation to ensure we always land on Result
+    try {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            { name: 'Home' },
+            { name: 'Result', params: { count: snap.count } },
+          ],
+        })
+      );
+    } catch (e) {
+      try {
+        navigation.replace('Result', { count: snap.count });
+      } catch (_) {
+        navigation.navigate('Result', { count: snap.count });
+      }
+    }
   };
 
   if (!permission?.granted) return null;
