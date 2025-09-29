@@ -108,7 +108,7 @@ export default function SitupTest({ navigation }) {
     // Fire-and-forget save
     try { saveTestResult(result); } catch {}
 
-    // Hard reset navigation to ensure we always land on Result
+    // Multi-tiered navigation to guarantee transition on all devices
     try {
       navigation.dispatch(
         CommonActions.reset({
@@ -119,13 +119,17 @@ export default function SitupTest({ navigation }) {
           ],
         })
       );
-    } catch (e) {
-      try {
-        navigation.replace('Result', { count: snap.count });
-      } catch (_) {
-        navigation.navigate('Result', { count: snap.count });
-      }
-    }
+    } catch (_) {}
+
+    // Secondary fallback shortly after
+    setTimeout(() => {
+      try { navigation.replace('Result', { count: snap.count }); } catch (_) {}
+    }, 120);
+
+    // Final fallback in case both above were ignored
+    setTimeout(() => {
+      try { navigation.navigate('Result', { count: snap.count }); } catch (_) {}
+    }, 400);
   };
 
   if (!permission?.granted) return null;
