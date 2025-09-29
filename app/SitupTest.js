@@ -67,7 +67,7 @@ export default function SitupTest({ navigation }) {
       } finally {
         processingRef.current = false;
       }
-    }, 900); // reduce capture rate to minimize shutter clicks
+    }, 1200); // further reduce capture rate to minimize shutter clicks
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -76,12 +76,14 @@ export default function SitupTest({ navigation }) {
 
   // Finish & persist
   const finish = async () => {
-    // stop processing immediately
+    // Stop processing immediately and navigate without waiting for network
     setActive(false);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+    processingRef.current = false;
+
     const snap = counterRef.current.snapshot();
     const result = {
       test: 'sit-up',
@@ -92,12 +94,18 @@ export default function SitupTest({ navigation }) {
       startedAt: snap.startedAt,
       finishedAt: Date.now(),
     };
-    // Save with a timeout guard so UI always navigates
-    try {
-      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('save-timeout')), 1200));
-      await Promise.race([saveTestResult(result), timeout]);
-    } catch (_) {}
-    navigation.replace('Result', { count: snap.count });
+
+    // Fire-and-forget save to avoid blocking navigation
+    try { saveTestResult(result); } catch {}
+
+    // Navigate on next tick to ensure UI updates flush
+    requestAnimationFrame(() => {
+      try {
+        navigation.navigate('Result', { count: snap.count });
+      } catch {
+        navigation.replace('Result', { count: snap.count });
+      }
+    });
   };
 
   if (!permission?.granted) return null;
@@ -120,11 +128,17 @@ export default function SitupTest({ navigation }) {
             {message ? (
               <Text style={{
                 color: status === 'invalid' ? '#ff6b6b' : '#ffffff',
-                marginTop: 4,
-                fontWeight: '600',
-                textShadowColor: 'rgba(0,0,0,0.6)',
+                marginTop: 6,
+                fontWeight: '800',
+                fontSize: 16,
+                backgroundColor: 'rgba(0,0,0,0.55)',
+                paddingHorizontal: 10,
+                paddingVertical: 6,
+                borderRadius: 8,
+                overflow: 'hidden',
+                textShadowColor: 'rgba(0,0,0,0.8)',
                 textShadowOffset: { width: 0, height: 1 },
-                textShadowRadius: 3,
+                textShadowRadius: 4,
               }}>{message}</Text>
             ) : null}
             <Button mode="contained" onPress={finish} style={{ marginTop: 12, height: 52, justifyContent: 'center' }} buttonColor="#F59E0B" textColor="#111827">{t('finishTest')}</Button>
