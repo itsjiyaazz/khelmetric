@@ -16,9 +16,9 @@ import '@tensorflow/tfjs-react-native'; // registers 'rn-webgl' backend
 import * as posedetection from '@tensorflow-models/pose-detection';
 
 const DEFAULT_CFG = {
-  // Looser thresholds to accommodate camera angle and body variation
-  upThresholdDeg: 35,   // sit-up considered when torso angle <= 35°
-  downThresholdDeg: 70, // down considered when torso angle >= 70°
+  // Fast-count profile thresholds for hackathon demo
+  upThresholdDeg: 45,   // sit-up considered when torso angle <= 45°
+  downThresholdDeg: 65, // down considered when torso angle >= 65°
   minDeltaToMoveDeg: 4,
   maxNoMoveMs: 5000,
   maxNoFaceMs: 3000,

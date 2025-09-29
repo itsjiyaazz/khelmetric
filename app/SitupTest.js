@@ -22,6 +22,7 @@ export default function SitupTest({ navigation }) {
   const [finishing, setFinishing] = useState(false);
   const [displayAngle, setDisplayAngle] = useState('–');
   const [displayScore, setDisplayScore] = useState('–');
+  const [displayPhase, setDisplayPhase] = useState('–');
   const insets = useSafeAreaInsets();
 
   const cameraRef = useRef(null);
@@ -62,6 +63,7 @@ export default function SitupTest({ navigation }) {
           const scoreTxt = Number.isFinite(snap?.debug?.lastPoseScore) ? snap.debug.lastPoseScore.toFixed(2) : '–';
           setDisplayAngle(angleTxt);
           setDisplayScore(scoreTxt);
+          setDisplayPhase(snap?.phase || '–');
           // Keep message for human-readable status only (do not override with angle text)
           setMessage(snap.message || '');
           if (!snap.active) {
@@ -74,7 +76,7 @@ export default function SitupTest({ navigation }) {
       } finally {
         processingRef.current = false;
       }
-    }, 1200); // further reduce capture rate to minimize shutter clicks
+    }, 350); // faster sampling (~3 fps) to catch transitions better
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -156,7 +158,7 @@ export default function SitupTest({ navigation }) {
             textShadowColor: 'rgba(0,0,0,0.9)',
             textShadowOffset: { width: 0, height: 1 },
             textShadowRadius: 5,
-          }}>{`angle ${displayAngle}°, score ${displayScore}`}</Text>
+          }}>{`${displayPhase} • angle ${displayAngle}°, score ${displayScore}`}</Text>
         </View>
       </View>
 
