@@ -67,7 +67,7 @@ export default function SitupTest({ navigation }) {
       } finally {
         processingRef.current = false;
       }
-    }, 350); // ~3 fps; adjust for device performance
+    }, 900); // reduce capture rate to minimize shutter clicks
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -76,6 +76,12 @@ export default function SitupTest({ navigation }) {
 
   // Finish & persist
   const finish = async () => {
+    // stop processing immediately
+    setActive(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
     const snap = counterRef.current.snapshot();
     const result = {
       test: 'sit-up',
@@ -84,8 +90,13 @@ export default function SitupTest({ navigation }) {
       duration: `${Math.max(1, Math.round(snap.durationMs / 1000))}s`,
       durationMs: snap.durationMs,
       startedAt: snap.startedAt,
+      finishedAt: Date.now(),
     };
-    await saveTestResult(result);
+    // Save with a timeout guard so UI always navigates
+    try {
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('save-timeout')), 1200));
+      await Promise.race([saveTestResult(result), timeout]);
+    } catch (_) {}
     navigation.replace('Result', { count: snap.count });
   };
 
@@ -106,7 +117,16 @@ export default function SitupTest({ navigation }) {
         <Card style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
           <Card.Content>
             <Text variant="headlineMedium" style={{ fontWeight: '800', color: '#FDE68A' }}>{count}</Text>
-            {message ? <Text style={{ color: status === 'invalid' ? '#ef4444' : '#E5E7EB', marginTop: 4 }}>{message}</Text> : null}
+            {message ? (
+              <Text style={{
+                color: status === 'invalid' ? '#ff6b6b' : '#ffffff',
+                marginTop: 4,
+                fontWeight: '600',
+                textShadowColor: 'rgba(0,0,0,0.6)',
+                textShadowOffset: { width: 0, height: 1 },
+                textShadowRadius: 3,
+              }}>{message}</Text>
+            ) : null}
             <Button mode="contained" onPress={finish} style={{ marginTop: 12, height: 52, justifyContent: 'center' }} buttonColor="#F59E0B" textColor="#111827">{t('finishTest')}</Button>
           </Card.Content>
         </Card>
