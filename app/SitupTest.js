@@ -19,6 +19,8 @@ export default function SitupTest({ navigation }) {
   const [status, setStatus] = useState('valid');
   const [active, setActive] = useState(true);
   const [finishing, setFinishing] = useState(false);
+  const [displayAngle, setDisplayAngle] = useState('–');
+  const [displayScore, setDisplayScore] = useState('–');
   const insets = useSafeAreaInsets();
 
   const cameraRef = useRef(null);
@@ -54,10 +56,13 @@ export default function SitupTest({ navigation }) {
           const snap = await counterRef.current.processImageTensor(imageTensor, Date.now());
           imageTensor.dispose && imageTensor.dispose();
           setCount(snap.count);
-          // Show live debug info to verify pose and angle
+          // Show live debug info to verify pose and angle (always visible in dedicated overlay)
           const angleTxt = Number.isFinite(snap?.debug?.lastAngle) ? snap.debug.lastAngle.toFixed(1) : '–';
           const scoreTxt = Number.isFinite(snap?.debug?.lastPoseScore) ? snap.debug.lastPoseScore.toFixed(2) : '–';
-          setMessage(snap.message || `angle ${angleTxt}°, score ${scoreTxt}`);
+          setDisplayAngle(angleTxt);
+          setDisplayScore(scoreTxt);
+          // Keep message for human-readable status only (do not override with angle text)
+          setMessage(snap.message || '');
           if (!snap.active) {
             setActive(false);
             setStatus(snap.status);
@@ -128,6 +133,21 @@ export default function SitupTest({ navigation }) {
           mirror={true}
         />
       </View>
+      {/* High-contrast angle/score overlay at top for visibility */}
+      <View style={{ position: 'absolute', top: Math.max(insets.top, 8), left: 8, right: 8, alignItems: 'center', zIndex: 30 }} pointerEvents="none">
+        <View style={{ backgroundColor: 'rgba(0,0,0,0.85)', paddingVertical: 8, paddingHorizontal: 14, borderRadius: 12, borderWidth: 1, borderColor: '#FFFFFF99' }}>
+          <Text style={{
+            color: '#ffffff',
+            fontSize: 20,
+            fontWeight: '900',
+            letterSpacing: 0.4,
+            textShadowColor: 'rgba(0,0,0,0.9)',
+            textShadowOffset: { width: 0, height: 1 },
+            textShadowRadius: 5,
+          }}>{`angle ${displayAngle}°, score ${displayScore}`}</Text>
+        </View>
+      </View>
+
       <View style={{ position: 'absolute', left: 0, right: 0, bottom: Math.max(insets.bottom, 12), zIndex: 20, paddingHorizontal: 8 }} pointerEvents="auto">
         <Card style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
           <Card.Content>
