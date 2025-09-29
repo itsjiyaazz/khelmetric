@@ -18,6 +18,7 @@ export default function SitupTest({ navigation }) {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState('valid');
   const [active, setActive] = useState(true);
+  const [finishing, setFinishing] = useState(false);
   const insets = useSafeAreaInsets();
 
   const cameraRef = useRef(null);
@@ -74,9 +75,22 @@ export default function SitupTest({ navigation }) {
     };
   }, [active, t]);
 
+  // Navigate to Result once finishing is toggled
+  useEffect(() => {
+    if (!finishing) return;
+    const snap = counterRef.current?.snapshot?.() || { count: 0 };
+    try {
+      navigation.replace('Result', { count: snap.count });
+    } catch (e) {
+      try { navigation.navigate('Result', { count: snap.count }); } catch (_) {}
+    }
+    // reset flag to avoid re-trigger
+    setFinishing(false);
+  }, [finishing, navigation]);
+
   // Finish & persist
   const finish = async () => {
-    // Stop processing immediately and navigate without waiting for network
+    // Stop processing immediately and trigger navigation via state effect
     setActive(false);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -98,14 +112,7 @@ export default function SitupTest({ navigation }) {
     // Fire-and-forget save to avoid blocking navigation
     try { saveTestResult(result); } catch {}
 
-    // Navigate on next tick to ensure UI updates flush
-    requestAnimationFrame(() => {
-      try {
-        navigation.navigate('Result', { count: snap.count });
-      } catch {
-        navigation.replace('Result', { count: snap.count });
-      }
-    });
+    setFinishing(true);
   };
 
   if (!permission?.granted) return null;
@@ -129,16 +136,17 @@ export default function SitupTest({ navigation }) {
               <Text style={{
                 color: status === 'invalid' ? '#ff6b6b' : '#ffffff',
                 marginTop: 6,
-                fontWeight: '800',
-                fontSize: 16,
-                backgroundColor: 'rgba(0,0,0,0.55)',
-                paddingHorizontal: 10,
-                paddingVertical: 6,
-                borderRadius: 8,
+                fontWeight: '900',
+                fontSize: 18,
+                letterSpacing: 0.3,
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+                borderRadius: 10,
                 overflow: 'hidden',
-                textShadowColor: 'rgba(0,0,0,0.8)',
+                textShadowColor: 'rgba(0,0,0,0.85)',
                 textShadowOffset: { width: 0, height: 1 },
-                textShadowRadius: 4,
+                textShadowRadius: 5,
               }}>{message}</Text>
             ) : null}
             <Button mode="contained" onPress={finish} style={{ marginTop: 12, height: 52, justifyContent: 'center' }} buttonColor="#F59E0B" textColor="#111827">{t('finishTest')}</Button>
