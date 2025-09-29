@@ -53,9 +53,12 @@ export default function SitupTest({ navigation }) {
           const snap = await counterRef.current.processImageTensor(imageTensor, Date.now());
           imageTensor.dispose && imageTensor.dispose();
           setCount(snap.count);
+          // Show live debug info to verify pose and angle
+          const angleTxt = Number.isFinite(snap?.debug?.lastAngle) ? snap.debug.lastAngle.toFixed(1) : '–';
+          const scoreTxt = Number.isFinite(snap?.debug?.lastPoseScore) ? snap.debug.lastPoseScore.toFixed(2) : '–';
+          setMessage(snap.message || `angle ${angleTxt}°, score ${scoreTxt}`);
           if (!snap.active) {
             setActive(false);
-            setMessage(snap.message || t('incompleteAttempt'));
             setStatus(snap.status);
           }
         }
@@ -64,7 +67,7 @@ export default function SitupTest({ navigation }) {
       } finally {
         processingRef.current = false;
       }
-    }, 450); // ~2 fps; adjust for device performance
+    }, 350); // ~3 fps; adjust for device performance
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);

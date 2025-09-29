@@ -16,11 +16,12 @@ import '@tensorflow/tfjs-react-native'; // registers 'rn-webgl' backend
 import * as posedetection from '@tensorflow-models/pose-detection';
 
 const DEFAULT_CFG = {
-  upThresholdDeg: 25,
-  downThresholdDeg: 55,
-  minDeltaToMoveDeg: 6,
+  // Looser thresholds to accommodate camera angle and body variation
+  upThresholdDeg: 35,   // sit-up considered when torso angle <= 35°
+  downThresholdDeg: 70, // down considered when torso angle >= 70°
+  minDeltaToMoveDeg: 4,
   maxNoMoveMs: 5000,
-  maxNoFaceMs: 2000,
+  maxNoFaceMs: 3000,
   flipHorizontal: true, // front camera
   modelType: 'lite', // 'lite' for speed in hackathon demos
 };
@@ -126,7 +127,7 @@ export function createSitupPoseCounter(config = {}) {
     }
 
     // Optional: require a minimally confident pose to proceed (helps on noisy frames)
-    if ((state.lastPoseScore ?? 0) < 0.3) {
+    if ((state.lastPoseScore ?? 0) < 0.1) {
       // Do not stop, just skip this frame
       return snapshot(ts);
     }
@@ -181,6 +182,12 @@ export function createSitupPoseCounter(config = {}) {
       startedAt: state.startedAt,
       stoppedAt: state.stoppedAt,
       durationMs,
+      debug: {
+        lastAngle: state.lastAngle,
+        lastPoseScore: state.lastPoseScore,
+        lastFaceAgoMs: ts - state.lastFaceTs,
+        lastMoveAgoMs: ts - state.lastMoveTs,
+      },
     };
   }
 
