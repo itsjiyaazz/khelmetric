@@ -22,6 +22,9 @@ const DEFAULT_CFG = {
   minDeltaToMoveDeg: 4,
   maxNoMoveMs: 5000,
   maxNoFaceMs: 3000,
+  faceWindowMs: 2000,
+  faceMinVisibleRate: 0.3,
+  faceScoreThreshold: 0.4,
   flipHorizontal: true, // front camera
   modelType: 'lite', // 'lite' for speed in hackathon demos
 };
@@ -31,6 +34,8 @@ export function createSitupPoseCounter(config = {}) {
 
   let detector = null;
   let ready = false;
+  // Sliding window of face visibility booleans
+  let faceHistory = [];
 
   const state = {
     phase: 'down',
@@ -96,12 +101,17 @@ export function createSitupPoseCounter(config = {}) {
     const lh = getKP(kps, 'left_hip');
     const rh = getKP(kps, 'right_hip');
 
-    // Face presence
+    // Face presence (robust): compute max score among nose/eyes
     const nose = getKP(kps, 'nose');
     const le = getKP(kps, 'left_eye');
     const re = getKP(kps, 'right_eye');
-    const faceSeen = [nose, le, re].some(k => (k?.score ?? 0) > 0.5);
+    const faceScore = Math.max(nose?.score ?? 0, le?.score ?? 0, re?.score ?? 0);
+    const faceSeen = faceScore >= cfg.faceScoreThreshold;
     if (faceSeen) state.lastFaceTs = ts;
+    // Update face history window
+    faceHistory.push({ ts, visible: faceSeen });
+    const cutoff = ts - cfg.faceWindowMs;
+    faceHistory = faceHistory.filter(h => h.ts >= cutoff);
 
     if (ls && rs && lh && rh) {
       const shoulderC = center(ls, rs);
@@ -132,13 +142,18 @@ export function createSitupPoseCounter(config = {}) {
       return snapshot(ts);
     }
 
-    // Cheat: no face visible too long
-    if (ts - state.lastFaceTs > cfg.maxNoFaceMs) {
-      state.status = 'invalid';
-      state.message = 'Face not visible';
-      state.active = false;
-      state.stoppedAt = ts;
-      return snapshot(ts);
+    // Cheat detection: insufficient face visibility over recent window OR extended absence
+    const recent = faceHistory;
+    if (recent.length > 0) {
+      const visibleCount = recent.filter(h => h.visible).length;
+      const rate = visibleCount / recent.length;
+      if (rate < cfg.faceMinVisibleRate || (ts - state.lastFaceTs > cfg.maxNoFaceMs)) {
+        state.status = 'invalid';
+        state.message = 'Face not visible';
+        state.active = false;
+        state.stoppedAt = ts;
+        return snapshot(ts);
+      }
     }
 
     // Inactivity stop
