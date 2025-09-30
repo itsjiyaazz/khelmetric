@@ -51,25 +51,31 @@ export default function SitupTest({ navigation }) {
       if (!cameraRef.current || processingRef.current) return;
       processingRef.current = true;
       try {
-        const photo = await cameraRef.current.takePictureAsync({ quality: 0.2, base64: true, skipProcessing: true });
-        if (photo?.base64) {
-          const bytes = base64js.toByteArray(photo.base64);
-          const imageTensor = decodeJpeg(bytes, 3); // Uint8 [H,W,3]
-          const snap = await counterRef.current.processImageTensor(imageTensor, Date.now());
-          imageTensor.dispose && imageTensor.dispose();
-          setCount(snap.count);
-          // Show live debug info to verify pose and angle (always visible in dedicated overlay)
-          const angleTxt = Number.isFinite(snap?.debug?.lastAngle) ? snap.debug.lastAngle.toFixed(1) : '–';
-          const scoreTxt = Number.isFinite(snap?.debug?.lastPoseScore) ? snap.debug.lastPoseScore.toFixed(2) : '–';
-          setDisplayAngle(angleTxt);
-          setDisplayScore(scoreTxt);
-          setDisplayPhase(snap?.phase || '–');
-          // Keep message for human-readable status only (do not override with angle text)
-          setMessage(snap.message || '');
-          if (!snap.active) {
-            setActive(false);
-            setStatus(snap.status);
+        try {
+          const photo = await cameraRef.current.takePictureAsync({ quality: 0.5, base64: true, skipProcessing: true });
+          console.log('Captured photo base64 length:', photo?.base64?.length || 0);
+          if (photo?.base64) {
+            const bytes = base64js.toByteArray(photo.base64);
+            const imageTensor = decodeJpeg(bytes, 3); // Uint8 [H,W,3]
+            const snap = await counterRef.current.processImageTensor(imageTensor, Date.now());
+            imageTensor.dispose && imageTensor.dispose();
+            setCount(snap.count);
+            // Show live debug info to verify pose and angle (always visible in dedicated overlay)
+            const angleTxt = Number.isFinite(snap?.debug?.lastAngle) ? snap.debug.lastAngle.toFixed(1) : '–';
+            const scoreTxt = Number.isFinite(snap?.debug?.lastPoseScore) ? snap.debug.lastPoseScore.toFixed(2) : '–';
+            setDisplayAngle(angleTxt);
+            setDisplayScore(scoreTxt);
+            setDisplayPhase(snap?.phase || '–');
+            // Human-friendly status message; if no pose, show that explicitly
+            const noPose = !Number.isFinite(snap?.debug?.lastPoseScore) || (snap?.debug?.lastPoseScore ?? 0) < 0.1;
+            setMessage(snap.message || (noPose ? 'No pose detected' : ''));
+            if (!snap.active) {
+              setActive(false);
+              setStatus(snap.status);
+            }
           }
+        } catch (capErr) {
+          console.log('Camera capture error:', capErr?.message || String(capErr));
         }
       } catch (e) {
         // Swallow errors to keep demo resilient
@@ -88,6 +94,9 @@ export default function SitupTest({ navigation }) {
 
   // Finish & persist
   const finish = async () => {
+    console.log('Finish button pressed!');
+    setFinishing(true);
+
     // Stop processing immediately
     setActive(false);
     if (intervalRef.current) {
@@ -96,7 +105,10 @@ export default function SitupTest({ navigation }) {
     }
     processingRef.current = false;
 
+    // Take a snapshot and stop the counter
     const snap = counterRef.current.snapshot();
+    console.log('Current snapshot:', snap);
+
     const result = {
       test: 'sit-up',
       count: snap.count,
@@ -107,31 +119,36 @@ export default function SitupTest({ navigation }) {
       finishedAt: Date.now(),
     };
 
-    // Fire-and-forget save
-    try { saveTestResult(result); } catch {}
-
-    // Multi-tiered navigation to guarantee transition on all devices
+    // Save locally (firebase disabled)
     try {
+      await saveTestResult(result);
+      console.log('Result saved successfully');
+    } catch (error) {
+      console.log('Error saving result:', error);
+    }
+
+    // Yield the UI thread before navigating to avoid contention with any pending work
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Force navigation with a stack reset (most reliable across devices)
+    try {
+      console.log('Dispatching stack reset to Result...');
       navigation.dispatch(
         CommonActions.reset({
-          index: 1,
-          routes: [
-            { name: 'Home' },
-            { name: 'Result', params: { count: snap.count } },
-          ],
+          index: 0,
+          routes: [{ name: 'Result', params: { count: snap.count } }],
         })
       );
-    } catch (_) {}
-
-    // Secondary fallback shortly after
-    setTimeout(() => {
-      try { navigation.replace('Result', { count: snap.count }); } catch (_) {}
-    }, 120);
-
-    // Final fallback in case both above were ignored
-    setTimeout(() => {
-      try { navigation.navigate('Result', { count: snap.count }); } catch (_) {}
-    }, 400);
+      console.log('Stack reset dispatched');
+    } catch (error) {
+      console.log('Reset navigation error:', error);
+      // Fallback
+      try {
+        navigation.replace('Result', { count: snap.count });
+      } catch (fallbackError) {
+        console.log('Fallback navigation error:', fallbackError);
+      }
+    }
   };
 
   if (!permission?.granted) return null;
@@ -145,6 +162,8 @@ export default function SitupTest({ navigation }) {
           facing="front"
           enableTorch={false}
           mirror={true}
+          mode="picture"
+          pointerEvents="none"
         />
       </View>
       {/* High-contrast angle/score overlay at top for visibility */}
@@ -163,7 +182,7 @@ export default function SitupTest({ navigation }) {
       </View>
 
       <View style={{ position: 'absolute', left: 0, right: 0, bottom: Math.max(insets.bottom, 12), zIndex: 20, paddingHorizontal: 8 }} pointerEvents="auto">
-        <Card style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
+        <Card style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20, elevation: 8 }}>
           <Card.Content>
             <Text variant="headlineMedium" style={{ fontWeight: '800', color: '#FDE68A' }}>{count}</Text>
             {message ? (
@@ -183,7 +202,19 @@ export default function SitupTest({ navigation }) {
                 textShadowRadius: 5,
               }}>{message}</Text>
             ) : null}
-            <Button mode="contained" onPress={finish} style={{ marginTop: 12, height: 52, justifyContent: 'center' }} buttonColor="#F59E0B" textColor="#111827">{t('finishTest')}</Button>
+            <Button 
+              mode="contained" 
+              onPress={() => {
+                console.log('Button onPress triggered');
+                finish();
+              }} 
+              style={{ marginTop: 12, height: 52, justifyContent: 'center' }} 
+              buttonColor="#F59E0B" 
+              textColor="#111827"
+              disabled={finishing}
+            >
+              {finishing ? 'Processing...' : t('finishTest')}
+            </Button>
           </Card.Content>
         </Card>
       </View>

@@ -57,6 +57,7 @@ export function createSitupPoseCounter(config = {}) {
     // Prefer rn-webgl; fall back to cpu if necessary
     try { await tf.setBackend('rn-webgl'); } catch {}
     await tf.ready();
+    console.log('TFJS backend:', tf.getBackend());
     detector = await posedetection.createDetector(posedetection.SupportedModels.BlazePose, {
       runtime: 'tfjs',
       modelType: cfg.modelType,
@@ -169,15 +170,24 @@ export function createSitupPoseCounter(config = {}) {
 
   async function processImageTensor(tensor, now) {
     if (!ready) await ensureReady();
-    // Expect tensor: [H, W, 3] uint8
-    const poses = await detector.estimatePoses(tensor, {
-      maxPoses: 1,
-      flipHorizontal: cfg.flipHorizontal,
-    });
-    const pose = poses?.[0];
-    state.lastPoseScore = pose?.score ?? 0;
-    const landmarks = pose?.keypoints || [];
-    return updateFromLandmarks(landmarks, now);
+    try {
+      // Expect tensor: [H, W, 3] uint8
+      const poses = await detector.estimatePoses(tensor, {
+        maxPoses: 1,
+        flipHorizontal: cfg.flipHorizontal,
+      });
+      const pose = poses?.[0];
+      state.lastPoseScore = pose?.score ?? 0;
+      const landmarks = pose?.keypoints || [];
+      if (!pose || !landmarks?.length) {
+        // No pose detected; keep state but provide snapshot for UI
+        return snapshot(now ?? Date.now());
+      }
+      return updateFromLandmarks(landmarks, now);
+    } catch (err) {
+      console.log('estimatePoses error:', err?.message || String(err));
+      return snapshot(now ?? Date.now());
+    }
   }
 
   function stop(now) {

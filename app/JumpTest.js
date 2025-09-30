@@ -26,14 +26,29 @@ export default function JumpTest({ navigation }) {
   }, [active, peak]);
 
   const finish = async () => {
+    console.log('Jump test finish button pressed!');
     const score = Math.round((peak - 1) * 30); // rough height estimate
-    await saveResult({ userId: 'local', testType: 'jump', score, timestamp: Date.now() });
-    navigation.reset({ index: 0, routes: [{ name: 'Result', params: { count: score } }] });
+    console.log('Calculated score:', score);
+    
+    try {
+      await saveResult({ userId: 'local', testType: 'jump', score, timestamp: Date.now() });
+      console.log('Jump result saved successfully');
+    } catch (error) {
+      console.log('Error saving jump result:', error);
+    }
+    
+    try {
+      console.log('Attempting navigation to Result screen...');
+      navigation.navigate('Result', { count: score });
+      console.log('Jump navigation completed');
+    } catch (error) {
+      console.log('Jump navigation error:', error);
+    }
   };
 
   return (
     <View style={{ flex: 1 }}>
-      <CameraView style={{ flex: 1 }} facing="front">
+      <CameraView style={{ flex: 1 }} facing="front" pointerEvents="none">
         <View pointerEvents="none" style={{ flex: 1 }} />
       </CameraView>
       <View style={{ position: 'absolute', left: 0, right: 0, bottom: Math.max(insets.bottom, 12) }}>

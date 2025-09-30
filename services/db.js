@@ -15,14 +15,8 @@ let _db = null;
 async function ensureFirebase() {
   try {
     if (!firebaseConfig || !firebaseConfig.apiKey) return null;
-    // Lazy import to avoid bundling firebase if unused
-    const { initializeApp, getApps } = await import('firebase/app');
-    if (!getApps().length) {
-      _firebaseApp = initializeApp(firebaseConfig);
-    }
-    const { getFirestore } = await import('firebase/firestore');
-    _db = getFirestore();
-    return _db;
+    // Firebase not configured, skip initialization
+    return null;
   } catch (e) {
     // Firebase not available or failed to init; fall back to local storage
     return null;
@@ -43,15 +37,6 @@ export async function saveTestResult(result) {
   const db = await ensureFirebase();
   if (!db) return { ok: true, localOnly: true };
 
-  try {
-    const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
-    await addDoc(collection(db, 'testResults'), {
-      ...result,
-      createdAt: serverTimestamp(),
-    });
-    return { ok: true, localOnly: false };
-  } catch (e) {
-    // Ignore remote errors for demo resilience
-    return { ok: false, error: String(e), localOnly: true };
-  }
+  // Firebase not configured, return local-only result
+  return { ok: true, localOnly: true };
 }
